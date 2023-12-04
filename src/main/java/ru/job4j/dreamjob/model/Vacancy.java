@@ -50,4 +50,17 @@ public class Vacancy {
     public void setCreationDate(LocalDateTime creationDate) {
         this.creationDate = creationDate;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vacancy vacancy = (Vacancy) o;
+        return id == vacancy.id && title.equals(vacancy.title) && description.equals(vacancy.description) && creationDate.equals(vacancy.creationDate);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, creationDate);
+    }
 }
