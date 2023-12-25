@@ -12,9 +12,6 @@ import java.util.Optional;
 @Repository
 public class MemoryCandidateRepository implements CandidateRepository {
 
-
-    private static final MemoryCandidateRepository INSTANCE = new MemoryCandidateRepository();
-
     private int nextId = 1;
 
     private final Map<Integer, Candidate> candidates = new HashMap<>();
@@ -26,10 +23,6 @@ public class MemoryCandidateRepository implements CandidateRepository {
                 LocalDateTime.parse("2022-11-27T10:15:30")));
         save(new Candidate(0, "Sidorov Igor Igorevich", "Senior Java Developer",
                 LocalDateTime.parse("2023-11-28T00:15:30")));
-    }
-
-    public static MemoryCandidateRepository getInstance() {
-        return INSTANCE;
     }
 
     @Override
