@@ -1,10 +1,9 @@
 package ru.job4j.dreamjob.repository;
 
-import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.dreamjob.model.Candidate;
 
-
+import javax.annotation.concurrent.ThreadSafe;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Map;
@@ -23,11 +22,11 @@ public class MemoryCandidateRepository implements CandidateRepository {
 
     private MemoryCandidateRepository() {
         save(new Candidate(0, "Ivanov Ivan Ivanovich", "Junior Java Developer",
-                LocalDateTime.parse("2020-11-27T10:15:30")));
+                LocalDateTime.parse("2020-11-27T10:15:30"), 3));
         save(new Candidate(0, "Petrov Petr Petrovich", "Middle Java Developer",
-                LocalDateTime.parse("2022-11-27T10:15:30")));
+                LocalDateTime.parse("2022-11-27T10:15:30"), 3));
         save(new Candidate(0, "Sidorov Igor Igorevich", "Senior Java Developer",
-                LocalDateTime.parse("2023-11-28T00:15:30")));
+                LocalDateTime.parse("2023-11-28T00:15:30"), 3));
     }
 
     @Override
@@ -45,9 +44,10 @@ public class MemoryCandidateRepository implements CandidateRepository {
 
     @Override
     public boolean update(Candidate candidate) {
-        return candidates.computeIfPresent(candidate.getId(),
-                (id, oldCandidate) -> new Candidate(oldCandidate.getId(), candidate.getName(), candidate.getDescription(),
-                        candidate.getCreationDate())) != null;
+        return candidates.computeIfPresent(candidate.getId(), (id, oldCandidate) -> {
+            return new Candidate(oldCandidate.getId(), candidate.getName(), candidate.getDescription(),
+                    candidate.getCreationDate(), candidate.getCityId());
+        }) != null;
     }
 
     @Override
