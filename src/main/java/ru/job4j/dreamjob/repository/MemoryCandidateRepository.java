@@ -22,11 +22,11 @@ public class MemoryCandidateRepository implements CandidateRepository {
 
     private MemoryCandidateRepository() {
         save(new Candidate(0, "Ivanov Ivan Ivanovich", "Junior Java Developer",
-                LocalDateTime.parse("2020-11-27T10:15:30"), 3));
+                LocalDateTime.parse("2020-11-27T10:15:30"), 3, 0));
         save(new Candidate(0, "Petrov Petr Petrovich", "Middle Java Developer",
-                LocalDateTime.parse("2022-11-27T10:15:30"), 3));
+                LocalDateTime.parse("2022-11-27T10:15:30"), 3, 0));
         save(new Candidate(0, "Sidorov Igor Igorevich", "Senior Java Developer",
-                LocalDateTime.parse("2023-11-28T00:15:30"), 3));
+                LocalDateTime.parse("2023-11-28T00:15:30"), 3, 0));
     }
 
     @Override
@@ -46,7 +46,7 @@ public class MemoryCandidateRepository implements CandidateRepository {
     public boolean update(Candidate candidate) {
         return candidates.computeIfPresent(candidate.getId(), (id, oldCandidate) -> {
             return new Candidate(oldCandidate.getId(), candidate.getName(), candidate.getDescription(),
-                    candidate.getCreationDate(), candidate.getCityId());
+                    candidate.getCreationDate(), candidate.getCityId(), candidate.getFileId());
         }) != null;
     }
 
