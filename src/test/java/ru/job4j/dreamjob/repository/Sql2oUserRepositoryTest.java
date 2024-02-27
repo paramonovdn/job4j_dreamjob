@@ -86,13 +86,14 @@ public class Sql2oUserRepositoryTest {
     @Test
     public void whenDontSaveThenNothingFound() {
         assertThat(sql2oUserRepository.findUserByEmail("nothing@mail.ru")).isEqualTo(empty());
-        assertThat(sql2oUserRepository.findByEmailAndPassword("nothing2@mail.ru", "nothing")).isEqualTo(empty());
+        assertThat(sql2oUserRepository.findByEmailAndPassword("nothing2@mail.ru", "nothing"))
+                .isEqualTo(empty());
     }
 
     @Test
     public void whenSaveExistEmail() {
-        var user1 = sql2oUserRepository.save(new User(6, "exist@mail.ru", "Serj Tankjan", "123")).get();
-        assertThatThrownBy(() -> sql2oUserRepository.save(new User(7, "exist@mail.ru", "Bob Dylan", "dylan123")))
-                .isInstanceOf(RuntimeException.class).hasMessage("IOExeption in save() method Sql2oUserRepository.class");
+        sql2oUserRepository.save(new User(6, "exist@mail.ru", "Serj Tankjan", "123")).get();
+        assertThat(sql2oUserRepository.save(new User(6, "exist@mail.ru", "Serj Tankjan", "123")))
+                .isEqualTo(empty());
     }
 }

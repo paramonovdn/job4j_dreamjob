@@ -36,11 +36,11 @@ public class Sql2oUserRepository implements UserRepository {
                     .addParameter("password", user.getPassword());
             int generatedId = query.executeUpdate().getKey(Integer.class);
             user.setId(generatedId);
+            return Optional.of(user);
         } catch (Exception e) {
             LOG.error("IOExeption in save() method Sql2oUserRepository.class");
-            throw new RuntimeException(String.format("IOExeption in save() method Sql2oUserRepository.class"));
         }
-        return Optional.of(user);
+        return Optional.empty();
     }
 
     @Override
