@@ -38,12 +38,17 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(Model model, @ModelAttribute User user) {
-        if (userService.findUserByEmail(user.getEmail()).isPresent()) {
-            model.addAttribute("message", "Пользователь с такой почтой уже существует");
+        try {
+            if (userService.findUserByEmail(user.getEmail()).isPresent()) {
+                model.addAttribute("message", "Пользователь с такой почтой уже существует");
+                return "errors/404";
+            }
+            userService.save(user);
+            return "redirect:/vacancies";
+        } catch (Exception exception) {
+            model.addAttribute("message", exception.getMessage());
             return "errors/404";
         }
-        userService.save(user);
-        return "redirect:/vacancies";
     }
 
     @GetMapping("/login")
@@ -61,14 +66,19 @@ public class UserController {
 
     @PostMapping("/login")
     public String loginUser(@ModelAttribute User user, Model model, HttpServletRequest request) {
-        var userOptional = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
-        if (userOptional.isEmpty()) {
-            model.addAttribute("error", "Почта или пароль введены неверно");
-            return "users/login";
+        try {
+            var userOptional = userService.findByEmailAndPassword(user.getEmail(), user.getPassword());
+            if (userOptional.isEmpty()) {
+                model.addAttribute("error", "Почта или пароль введены неверно");
+                return "users/login";
+            }
+            var session = request.getSession();
+            session.setAttribute("user", userOptional.get());
+            return "redirect:/vacancies";
+        } catch (Exception exception) {
+            model.addAttribute("message", exception.getMessage());
+            return "errors/404";
         }
-        var session = request.getSession();
-        session.setAttribute("user", userOptional.get());
-        return "redirect:/vacancies";
     }
 
     @GetMapping("/logout")

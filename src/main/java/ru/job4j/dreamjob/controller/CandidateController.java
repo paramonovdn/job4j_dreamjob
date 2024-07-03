@@ -93,7 +93,7 @@ public class CandidateController {
         try {
             var isUpdated = candidateService.update(candidate, new FileDto(file.getOriginalFilename(), file.getBytes()));
             if (!isUpdated) {
-                model.addAttribute("message", "Резюме с указанным идентификатором не найдена");
+                model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
                 return "errors/404";
             }
             return "redirect:/candidates";
@@ -107,7 +107,7 @@ public class CandidateController {
     public String delete(Model model, @PathVariable int id) {
         var isDeleted = candidateService.deleteById(id);
         if (!isDeleted) {
-            model.addAttribute("message", "Вакансия с указанным идентификатором не найдена");
+            model.addAttribute("message", "Резюме с указанным идентификатором не найдено");
             return "errors/404";
         }
         return "redirect:/candidates";
