@@ -1,12 +1,10 @@
 package ru.job4j.dreamjob.repository;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Sql2o;
 import ru.job4j.dreamjob.model.User;
-
 
 import java.util.Collection;
 import java.util.Optional;
@@ -39,8 +37,8 @@ public class Sql2oUserRepository implements UserRepository {
             return Optional.of(user);
         } catch (Exception e) {
             LOG.error("IOExeption in save() method Sql2oUserRepository.class");
+            throw new RuntimeException("Пользователь с такой почтой уже существует");
         }
-        return Optional.empty();
     }
 
     @Override
