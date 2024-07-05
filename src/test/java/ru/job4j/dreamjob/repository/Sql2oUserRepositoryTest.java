@@ -92,10 +92,8 @@ public class Sql2oUserRepositoryTest {
 
     @Test
     public void whenSaveExistEmail() {
-        User user = new User(6, "exist@mail.ru", "Serj Tankjan", "123");
-        sql2oUserRepository.save(user);
-        assertThatThrownBy(() -> sql2oUserRepository.save(user))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessageContaining("Пользователь с такой почтой уже существует");
+        sql2oUserRepository.save(new User(6, "exist@mail.ru", "Serj Tankjan", "123")).get();
+        assertThat(sql2oUserRepository.save(new User(6, "exist@mail.ru", "Serj Tankjan", "123")))
+                .isEqualTo(empty());
     }
 }
